@@ -19,7 +19,7 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
-interface PancakeFactoryInterface extends ethers.utils.Interface {
+interface ApeFactoryInterface extends ethers.utils.Interface {
   functions: {
     "INIT_CODE_PAIR_HASH()": FunctionFragment;
     "allPairs(uint256)": FunctionFragment;
@@ -92,7 +92,7 @@ interface PancakeFactoryInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "PairCreated"): EventFragment;
 }
 
-export class PancakeFactory extends BaseContract {
+export class ApeFactory extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -133,7 +133,7 @@ export class PancakeFactory extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: PancakeFactoryInterface;
+  interface: ApeFactoryInterface;
 
   functions: {
     INIT_CODE_PAIR_HASH(overrides?: CallOverrides): Promise<[string]>;

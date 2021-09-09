@@ -2,96 +2,37 @@ import {HardhatRuntimeEnvironment} from 'hardhat/types';
 import {DeployFunction} from 'hardhat-deploy/types';
 import {parseEther} from 'ethers/lib/utils';
 import {artifacts} from 'hardhat';
+import { writeFileSync } from 'fs';
 
 // npx hardhat deploy --network bsc-testnet --tags deploy_BSCT --reset
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {deployments, getNamedAccounts} = hre;
-  const {deploy, execute} = deployments;
+  const {deploy, execute, read} = deployments;
 
   const {deployer} = await getNamedAccounts();
 
-  const cakeToken = await deploy('CakeToken', {
-    from: deployer,
-    args: [],
-    log: true,
-  });
-
-  // self-donation 1000 tokens to dev
-  await execute(
-    'CakeToken',
-    {from: deployer, log: true},
-    'mint_natural',
-    '0x10E38dFfFCfdBaaf590D5A9958B01C9cfcF6A63B',
-    1000
-  );
-
-  // const quantToken = await deploy('QuantToken', {
-  //   from: deployer,
-  //   args: [],
-  //   log: true,
-  // });
-
-  // // self-donation 1000 tokens to dev
-  // await execute(
-  //   'QuantToken',
-  //   {from: deployer, log: true},
-  //   'mint_natural',
-  //   '0x10E38dFfFCfdBaaf590D5A9958B01C9cfcF6A63B',
-  //   1000
-  // );
-
-  const syrupBar = await deploy('SyrupBar', {
-    from: deployer,
-    args: [cakeToken.address],
-    log: true,
-  });
-
-  const masterChef = await deploy('MasterChef', {
+  const pancakeFactory = await deploy('ApeFactory', {
     from: deployer,
     args: [
-      cakeToken.address,
-      syrupBar.address,
-      '0x10E38dFfFCfdBaaf590D5A9958B01C9cfcF6A63B',
-      1,
-      11966425,
+      deployer, // feeToSetter
     ],
     log: true,
   });
 
-  const router = await deploy('PancakeRouter01', {
-    from: deployer,
-    args: [],
-  });
-  /*
-  const bnbStaking = await deploy('BnbStaking', {
-    from: deployer,
-    args: [
-      '0x10E38dFfFCfdBaaf590D5A9958B01C9cfcF6A63B', //lp address
-      cakeToken.address,
-      1, // reward per block
-      11966425, // start block
-      12966425, // end block
-      '0x10E38dFfFCfdBaaf590D5A9958B01C9cfcF6A63B', // adminAddress
-      '0xae13d989dac2f0debff460ac112a837c89baa7cd', // WBNB testnet address
-    ],
-    log: true,
-  }); */
+  const init_hash = await read('ApeFactory', 'INIT_CODE_PAIR_HASH')
+  // console.log(x);
 
-  // transferring ownership to to masterChef
-  await execute(
-    'CakeToken',
-    {from: deployer, log: true},
-    'transferOwnership',
-    masterChef.address
-  );
+  const feeToSetter = await read('ApeFactory', 'feeToSetter')
+  console.log(feeToSetter)
+  const contracts = {
+    "ApeFactory":  pancakeFactory.address,
+    "INIT_CODE_PAIR_HASH": init_hash
+  }
 
-  await execute(
-    'SyrupBar',
-    {from: deployer, log: true},
-    'transferOwnership',
-    masterChef.address
-  );
+  pancakeFactory.deployedBytecode
+
+  writeFileSync('swap-core.json', JSON.stringify(contracts));
 };
 
 export default func;

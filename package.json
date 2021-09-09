@@ -76,6 +76,7 @@
   "dependencies": {
     "@nomiclabs/hardhat-solhint": "^2.0.0",
     "@pancakeswap/pancake-swap-lib": "0.0.4",
+    "@remix-project/remixd": "^0.4.2",
     "@tenderly/hardhat-tenderly": "^1.0.12",
     "hardhat-abi-exporter": "^2.2.1",
     "hardhat-deploy-ethers": "^0.3.0-beta.10",
@@ -84,6 +85,7 @@
     "hardhat-typechain": "^0.3.5",
     "hardhat-watcher": "^2.1.1",
     "install": "^0.13.0",
-    "npm": "^7.20.6"
+    "npm": "^7.20.6",
+    "remix-project": "git+https://github.com/ethereum/remix-project.git"
   }
 }

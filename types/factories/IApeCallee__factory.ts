@@ -4,10 +4,7 @@
 
 import { Contract, Signer, utils } from "ethers";
 import { Provider } from "@ethersproject/providers";
-import type {
-  IPancakeCallee,
-  IPancakeCalleeInterface,
-} from "../IPancakeCallee";
+import type { IApeCallee, IApeCalleeInterface } from "../IApeCallee";
 
 const _abi = [
   {
@@ -42,15 +39,15 @@ const _abi = [
   },
 ];
 
-export class IPancakeCallee__factory {
+export class IApeCallee__factory {
   static readonly abi = _abi;
-  static createInterface(): IPancakeCalleeInterface {
-    return new utils.Interface(_abi) as IPancakeCalleeInterface;
+  static createInterface(): IApeCalleeInterface {
+    return new utils.Interface(_abi) as IApeCalleeInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): IPancakeCallee {
-    return new Contract(address, _abi, signerOrProvider) as IPancakeCallee;
+  ): IApeCallee {
+    return new Contract(address, _abi, signerOrProvider) as IApeCallee;
   }
 }

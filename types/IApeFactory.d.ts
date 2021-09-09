@@ -19,7 +19,7 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
-interface IPancakeFactoryInterface extends ethers.utils.Interface {
+interface IApeFactoryInterface extends ethers.utils.Interface {
   functions: {
     "allPairs(uint256)": FunctionFragment;
     "allPairsLength()": FunctionFragment;
@@ -83,7 +83,7 @@ interface IPancakeFactoryInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "PairCreated"): EventFragment;
 }
 
-export class IPancakeFactory extends BaseContract {
+export class IApeFactory extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -124,7 +124,7 @@ export class IPancakeFactory extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: IPancakeFactoryInterface;
+  interface: IApeFactoryInterface;
 
   functions: {
     allPairs(

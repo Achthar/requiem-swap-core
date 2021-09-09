@@ -4,7 +4,7 @@
 
 import { Contract, Signer, utils } from "ethers";
 import { Provider } from "@ethersproject/providers";
-import type { IPancakeERC20, IPancakeERC20Interface } from "../IPancakeERC20";
+import type { IApeERC20, IApeERC20Interface } from "../IApeERC20";
 
 const _abi = [
   {
@@ -345,15 +345,15 @@ const _abi = [
   },
 ];
 
-export class IPancakeERC20__factory {
+export class IApeERC20__factory {
   static readonly abi = _abi;
-  static createInterface(): IPancakeERC20Interface {
-    return new utils.Interface(_abi) as IPancakeERC20Interface;
+  static createInterface(): IApeERC20Interface {
+    return new utils.Interface(_abi) as IApeERC20Interface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): IPancakeERC20 {
-    return new Contract(address, _abi, signerOrProvider) as IPancakeERC20;
+  ): IApeERC20 {
+    return new Contract(address, _abi, signerOrProvider) as IApeERC20;
   }
 }
