@@ -308,7 +308,7 @@ const config: HardhatUserConfig = {
     deploy: 'deploy',
     deployments: 'deployments',
     imports: 'imports',
-    sources: 'contracts',
+    sources: 'publish',
     tests: 'test',
   },
   preprocess: {
@@ -319,15 +319,6 @@ const config: HardhatUserConfig = {
   },
   solidity: {
     compilers: [
-      // {
-      //   version: '0.8.0',
-      //   settings: {
-      //     optimizer: {
-      //       enabled: true,
-      //       runs: 200,
-      //     },
-      //   },
-      // },
       {
         version: '0.5.16',
         settings: {
@@ -335,6 +326,7 @@ const config: HardhatUserConfig = {
             enabled: true,
             runs: 200,
           },
+          evmVersion: 'istanbul',
         },
       },
     ],

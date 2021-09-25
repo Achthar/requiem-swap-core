@@ -19,8 +19,9 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
-interface IApeFactoryInterface extends ethers.utils.Interface {
+interface RequiemFactoryInterface extends ethers.utils.Interface {
   functions: {
+    "INIT_CODE_PAIR_HASH()": FunctionFragment;
     "allPairs(uint256)": FunctionFragment;
     "allPairsLength()": FunctionFragment;
     "createPair(address,address)": FunctionFragment;
@@ -31,6 +32,10 @@ interface IApeFactoryInterface extends ethers.utils.Interface {
     "setFeeToSetter(address)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "INIT_CODE_PAIR_HASH",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "allPairs",
     values: [BigNumberish]
@@ -58,6 +63,10 @@ interface IApeFactoryInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "INIT_CODE_PAIR_HASH",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "allPairs", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "allPairsLength",
@@ -83,7 +92,7 @@ interface IApeFactoryInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "PairCreated"): EventFragment;
 }
 
-export class IApeFactory extends BaseContract {
+export class RequiemFactory extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -124,13 +133,12 @@ export class IApeFactory extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: IApeFactoryInterface;
+  interface: RequiemFactoryInterface;
 
   functions: {
-    allPairs(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string] & { pair: string }>;
+    INIT_CODE_PAIR_HASH(overrides?: CallOverrides): Promise<[string]>;
+
+    allPairs(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
 
     allPairsLength(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -145,21 +153,23 @@ export class IApeFactory extends BaseContract {
     feeToSetter(overrides?: CallOverrides): Promise<[string]>;
 
     getPair(
-      tokenA: string,
-      tokenB: string,
+      arg0: string,
+      arg1: string,
       overrides?: CallOverrides
-    ): Promise<[string] & { pair: string }>;
+    ): Promise<[string]>;
 
     setFeeTo(
-      arg0: string,
+      _feeTo: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     setFeeToSetter(
-      arg0: string,
+      _feeToSetter: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  INIT_CODE_PAIR_HASH(overrides?: CallOverrides): Promise<string>;
 
   allPairs(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
@@ -176,22 +186,24 @@ export class IApeFactory extends BaseContract {
   feeToSetter(overrides?: CallOverrides): Promise<string>;
 
   getPair(
-    tokenA: string,
-    tokenB: string,
+    arg0: string,
+    arg1: string,
     overrides?: CallOverrides
   ): Promise<string>;
 
   setFeeTo(
-    arg0: string,
+    _feeTo: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   setFeeToSetter(
-    arg0: string,
+    _feeToSetter: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    INIT_CODE_PAIR_HASH(overrides?: CallOverrides): Promise<string>;
+
     allPairs(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
     allPairsLength(overrides?: CallOverrides): Promise<BigNumber>;
@@ -207,14 +219,17 @@ export class IApeFactory extends BaseContract {
     feeToSetter(overrides?: CallOverrides): Promise<string>;
 
     getPair(
-      tokenA: string,
-      tokenB: string,
+      arg0: string,
+      arg1: string,
       overrides?: CallOverrides
     ): Promise<string>;
 
-    setFeeTo(arg0: string, overrides?: CallOverrides): Promise<void>;
+    setFeeTo(_feeTo: string, overrides?: CallOverrides): Promise<void>;
 
-    setFeeToSetter(arg0: string, overrides?: CallOverrides): Promise<void>;
+    setFeeToSetter(
+      _feeToSetter: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -230,6 +245,8 @@ export class IApeFactory extends BaseContract {
   };
 
   estimateGas: {
+    INIT_CODE_PAIR_HASH(overrides?: CallOverrides): Promise<BigNumber>;
+
     allPairs(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
     allPairsLength(overrides?: CallOverrides): Promise<BigNumber>;
@@ -245,23 +262,27 @@ export class IApeFactory extends BaseContract {
     feeToSetter(overrides?: CallOverrides): Promise<BigNumber>;
 
     getPair(
-      tokenA: string,
-      tokenB: string,
+      arg0: string,
+      arg1: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     setFeeTo(
-      arg0: string,
+      _feeTo: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     setFeeToSetter(
-      arg0: string,
+      _feeToSetter: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    INIT_CODE_PAIR_HASH(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     allPairs(
       arg0: BigNumberish,
       overrides?: CallOverrides
@@ -280,18 +301,18 @@ export class IApeFactory extends BaseContract {
     feeToSetter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getPair(
-      tokenA: string,
-      tokenB: string,
+      arg0: string,
+      arg1: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     setFeeTo(
-      arg0: string,
+      _feeTo: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     setFeeToSetter(
-      arg0: string,
+      _feeToSetter: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

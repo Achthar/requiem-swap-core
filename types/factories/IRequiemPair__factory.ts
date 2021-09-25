@@ -4,7 +4,7 @@
 
 import { Contract, Signer, utils } from "ethers";
 import { Provider } from "@ethersproject/providers";
-import type { IApePair, IApePairInterface } from "../IApePair";
+import type { IRequiemPair, IRequiemPairInterface } from "../IRequiemPair";
 
 const _abi = [
   {
@@ -714,15 +714,15 @@ const _abi = [
   },
 ];
 
-export class IApePair__factory {
+export class IRequiemPair__factory {
   static readonly abi = _abi;
-  static createInterface(): IApePairInterface {
-    return new utils.Interface(_abi) as IApePairInterface;
+  static createInterface(): IRequiemPairInterface {
+    return new utils.Interface(_abi) as IRequiemPairInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): IApePair {
-    return new Contract(address, _abi, signerOrProvider) as IApePair;
+  ): IRequiemPair {
+    return new Contract(address, _abi, signerOrProvider) as IRequiemPair;
   }
 }

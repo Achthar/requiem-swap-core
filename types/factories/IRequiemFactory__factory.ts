@@ -4,7 +4,10 @@
 
 import { Contract, Signer, utils } from "ethers";
 import { Provider } from "@ethersproject/providers";
-import type { IApeFactory, IApeFactoryInterface } from "../IApeFactory";
+import type {
+  IRequiemFactory,
+  IRequiemFactoryInterface,
+} from "../IRequiemFactory";
 
 const _abi = [
   {
@@ -188,15 +191,15 @@ const _abi = [
   },
 ];
 
-export class IApeFactory__factory {
+export class IRequiemFactory__factory {
   static readonly abi = _abi;
-  static createInterface(): IApeFactoryInterface {
-    return new utils.Interface(_abi) as IApeFactoryInterface;
+  static createInterface(): IRequiemFactoryInterface {
+    return new utils.Interface(_abi) as IRequiemFactoryInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): IApeFactory {
-    return new Contract(address, _abi, signerOrProvider) as IApeFactory;
+  ): IRequiemFactory {
+    return new Contract(address, _abi, signerOrProvider) as IRequiemFactory;
   }
 }
